@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 
 const artistSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, trim: true, maxlength: 80 },
-    genres: [{ type: String, trim: true }]
+    name: { type: String, required: true, trim: true, unique: true },
   },
   { timestamps: true }
 );

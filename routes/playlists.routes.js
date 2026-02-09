@@ -1,20 +1,16 @@
 const router = require("express").Router();
-const asyncHandler = require("../utils/asyncHandler");
-const auth = require("../middleware/auth.middleware");
-const validate = require("../middleware/validate.middleware");
-const {
-  createPlaylist,
-  getPlaylists,
-  getPlaylistById,
-  updatePlaylist,
-  deletePlaylist
-} = require("../controllers/playlists.controller");
-const { createPlaylistSchema, updatePlaylistSchema } = require("./_schemas");
 
-router.post("/", auth, validate(createPlaylistSchema), asyncHandler(createPlaylist));
-router.get("/", auth, asyncHandler(getPlaylists));
-router.get("/:id", auth, asyncHandler(getPlaylistById));
-router.put("/:id", auth, validate(updatePlaylistSchema), asyncHandler(updatePlaylist));
-router.delete("/:id", auth, asyncHandler(deletePlaylist));
+const auth = require("../middleware/auth.middleware");
+const playlists = require("../controllers/playlists.controller");
+
+router.post("/", auth, playlists.createPlaylist);
+router.get("/", auth, playlists.getMyPlaylists);
+router.get("/:id", auth, playlists.getPlaylistById);
+router.put("/:id", auth, playlists.updatePlaylist);
+router.delete("/:id", auth, playlists.deletePlaylist);
+
+router.post("/:id/tracks", auth, playlists.addTrackFromExternal);
+router.get("/:id/tracks", auth, playlists.getPlaylistTracks);
+router.delete("/:id/tracks/:songId", auth, playlists.removeTrackFromPlaylist);
 
 module.exports = router;
